@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
 const employeeURL =
   "https://hackt-6c946-default-rtdb.asia-southeast1.firebasedatabase.app/employees.json";
@@ -88,7 +89,9 @@ const Home = () => {
                 >
                   Delete
                 </button>
-                <button className="edit-btn">Edit</button>
+                <Link to={`/editEmployee/${employee.id}`}>
+                  <button className="edit-btn">Edit</button>
+                </Link>
               </div>
             </div>
           ))
