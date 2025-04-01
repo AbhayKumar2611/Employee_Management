@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav>
-      <h1>Employee Management</h1>
+      <h1 style={{ color: "white" }}>Employee Management</h1>
       <div className="nav-links">
         <NavLink
           to="/"
