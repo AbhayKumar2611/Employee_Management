@@ -83,10 +83,10 @@ const AddEmployee = () => {
           <input
             type="number"
             placeholder="Enter Employee ID"
-            value={employeeID}
+            value={employeesData.employeeID}
             required
           />
-          <select value={department} required>
+          <select value={employeesData.department} required>
             <option value="">Select Department</option>
             <option value="HR">HR</option>
             <option value="IT">IT</option>
@@ -97,17 +97,17 @@ const AddEmployee = () => {
           <input
             type="text"
             placeholder="Enter Job Title"
-            value={jobTitle}
+            value={employeesData.jobTitle}
             required
           />
           <label style={{ marginTop: "10px" }}>Date Of Joining</label>
           <input
             type="date"
             placeholder="Enter Joining Date"
-            value={joiningDate}
+            value={employeesData.joiningDate}
             required
           />
-          <select value={employmentType} required>
+          <select value={employeesData.employmentType} required>
             <option value="">Employment Type</option>
             <option value="Full Time">Full Time</option>
             <option value="Part Time">Part Time</option>
@@ -116,7 +116,7 @@ const AddEmployee = () => {
           <input
             type="number"
             placeholder="Enter Salary"
-            value={salary}
+            value={employeesData.salary}
             required
           />
         </div>
@@ -146,10 +146,21 @@ const AddEmployee = () => {
           <input
             type="number"
             placeholder="Emergency Contact Number"
+            value={employeesData.emergencyContact}
             required
           />
-          <input type="text" placeholder="Enter Username" required />
-          <input type="password" placeholder="Enter Password" required />
+          <input
+            type="text"
+            placeholder="Enter Username"
+            value={employeesData.usename}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={employeesData.password}
+            required
+          />
         </div>
 
         {/* Submit Button */}
