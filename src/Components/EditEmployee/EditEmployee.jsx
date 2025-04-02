@@ -8,13 +8,7 @@ const EditEmployee = () => {
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
 
-  const departmentOptions = [
-    "HR",
-    "Engineering",
-    "Marketing",
-    "Sales",
-    "Finance",
-  ];
+  const departmentOptions = ["HR", "IT", "Finance", "Operations", "Others"];
   const jobTitles = [
     "Manager",
     "Software Engineer",
