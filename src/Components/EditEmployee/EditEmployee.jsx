@@ -3,15 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./EditEmployee.css";
 
-const employeeURL =
-  "https://hackt-6c946-default-rtdb.asia-southeast1.firebasedatabase.app/employees.json";
-
 const EditEmployee = () => {
-  const { id } = useParams(); // Get the employee id from the URL
+  const { id } = useParams();
   const [employee, setEmployee] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch the employee data when the component mounts
+  const departmentOptions = [
+    "HR",
+    "Engineering",
+    "Marketing",
+    "Sales",
+    "Finance",
+  ];
+  const jobTitles = [
+    "Manager",
+    "Software Engineer",
+    "Designer",
+    "Analyst",
+    "HR Executive",
+  ];
+
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
@@ -27,7 +38,6 @@ const EditEmployee = () => {
     fetchEmployee();
   }, [id]);
 
-  // Handle form submission to update the employee
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,13 +46,12 @@ const EditEmployee = () => {
         `https://hackt-6c946-default-rtdb.asia-southeast1.firebasedatabase.app/employees/${id}.json`,
         employee
       );
-      navigate("/"); // Navigate back to the home page after successful update
+      navigate("/");
     } catch (error) {
       console.error("Error updating employee data", error);
     }
   };
 
-  // Handle input change
   const handleChange = (e) => {
     setEmployee({
       ...employee,
@@ -54,107 +63,145 @@ const EditEmployee = () => {
     <div className="edit-container">
       <h1>Edit Employee</h1>
       {employee ? (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Full Name:
+        <form onSubmit={handleSubmit} className="edit-form">
+          <div className="form-group">
+            <label>Full Name:</label>
             <input
               type="text"
               name="fullName"
               value={employee.fullName}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Email:
+          </div>
+
+          <div className="form-group">
+            <label>Email:</label>
             <input
               type="email"
               name="email"
               value={employee.email}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Phone:
+          </div>
+
+          <div className="form-group">
+            <label>Phone:</label>
             <input
               type="text"
               name="phone"
               value={employee.phone}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Department:
-            <input
-              type="text"
+          </div>
+
+          <div className="form-group">
+            <label>Department:</label>
+            <select
               name="department"
               value={employee.department}
               onChange={handleChange}
-            />
-          </label>
-          <label>
-            Job Title:
-            <input
-              type="text"
+              required
+            >
+              <option value="">Select Department</option>
+              {departmentOptions.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Job Title:</label>
+            <select
               name="jobTitle"
               value={employee.jobTitle}
               onChange={handleChange}
-            />
-          </label>
-          <label>
-            Salary:
+              required
+            >
+              <option value="">Select Job Title</option>
+              {jobTitles.map((title) => (
+                <option key={title} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Salary:</label>
             <input
               type="number"
               name="salary"
               value={employee.salary}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Date of Birth:
+          </div>
+
+          <div className="form-group">
+            <label>Date of Birth:</label>
             <input
               type="date"
               name="dob"
               value={employee.dob}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Joining Date:
+          </div>
+
+          <div className="form-group">
+            <label>Joining Date:</label>
             <input
               type="date"
               name="joiningDate"
               value={employee.joiningDate}
               onChange={handleChange}
+              required
             />
-          </label>
-          <label>
-            Gender:
-            <input
-              type="text"
+          </div>
+
+          <div className="form-group">
+            <label>Gender:</label>
+            <select
               name="gender"
               value={employee.gender}
               onChange={handleChange}
-            />
-          </label>
-          <label>
-            Current Address:
-            <input
-              type="text"
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Current Address:</label>
+            <textarea
               name="currentAddress"
               value={employee.currentAddress}
               onChange={handleChange}
-            />
-          </label>
-          <label>
-            Permanent Address:
-            <input
-              type="text"
+              required
+            ></textarea>
+          </div>
+
+          <div className="form-group">
+            <label>Permanent Address:</label>
+            <textarea
               name="permanentAddress"
               value={employee.permanentAddress}
               onChange={handleChange}
-            />
-          </label>
-          <button type="submit">Update Employee</button>
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" className="update-btn">
+            Update Employee
+          </button>
         </form>
       ) : (
         <p>Loading...</p>
