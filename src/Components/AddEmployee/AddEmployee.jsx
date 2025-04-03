@@ -3,6 +3,9 @@ import "./AddEmployee.css";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { storage, database } from "../../firebase"; // Import storage and database
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // For image upload
+import { push, ref as dbRef } from "firebase/database"; // For database entry
 
 const employeeURL =
   "https://hackt-6c946-default-rtdb.asia-southeast1.firebasedatabase.app/employees.json";
@@ -26,23 +29,51 @@ const AddEmployee = () => {
     emergencyContact: "",
     username: "",
     password: "",
+    profileImage: "",
   });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      axios.post(employeeURL, employeesData);
-      alert("Employee added Successfully...");
-      navigate("/");
-    } catch (error) {
-      console.log("Error adding employees", error);
-      alert("Error adding employees, please try again");
-    }
-  };
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEmployeesData({ ...employeesData, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // try {
+    //   axios.post(employeeURL, employeesData);
+    //   alert("Employee added Successfully...");
+    //   navigate("/");
+    // } catch (error) {
+    //   console.log("Error adding employees", error);
+    //   alert("Error adding employees, please try again");
+    // }
+    try {
+      let imageURL = "";
+      if (selectedImage) {
+        const storageRef = ref(
+          storage,
+          `employee_images/${selectedImage.name}`
+        );
+        await uploadBytes(storageRef, selectedImage);
+        imageURL = await getDownloadURL(storageRef);
+      }
+
+      // Save data to Firebase Realtime Database
+      const newEmployee = { ...employeesData, profileImage: imageURL };
+      await push(dbRef(database, "employees"), newEmployee);
+      alert("Employee Added Successfully....");
+      navigate("/");
+    } catch (error) {
+      console.error("Error Adding Employee", error);
+      alert("Error adding employee, please try again...");
+    }
   };
 
   return (
@@ -207,6 +238,13 @@ const AddEmployee = () => {
         {/* Additional Information */}
         <div className="form-section">
           <h2>Additional Information</h2>
+          <label>Upload Profile Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+          />
           <input
             type="number"
             placeholder="Emergency Contact Number"
